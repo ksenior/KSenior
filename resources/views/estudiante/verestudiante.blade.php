@@ -20,7 +20,7 @@
             {{ Form::open(['action' => 'EstudianteController@ver_estudiante_consulta']) }}
                 <div class="row">
                      @if ($errors->any())
-                        <div class="help-block red-text">         
+                        <div class="help-block red-text">
                         @foreach ($errors->all() as $error)
                                 <strong>{{ $error }}<br></strong>
                         @endforeach
@@ -40,12 +40,13 @@
                     </div>
                 </div>
                 <div class="row">
-                        <button class="btn center waves-effect waves-light blue darken-4" type="submit" name="action">Consultar</button>    
+                        <button class="btn center waves-effect waves-light blue darken-4" type="submit" name="action">Consultar</button>
                     </div>
             {{ Form::close()}}
         </div>
         </center>
-	@else<div class="row">
+	@else
+        <div class="row">
             <div class="col s6">
                 <div class="card horizontal hoverable">
                     <div class="card-stacked">
@@ -59,12 +60,11 @@
         </div>
 
         <div class="divider"></div>
-        
+
         @if ($consulta == null)
             <h4>No hay datos para mostrar</h4>
         @else
-            
-            <table id="tabla_datos" class="striped" cellspacing="0" width="100%">
+        <table id="tabla_datos" class="striped" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th># DOCUMENTO</th>
@@ -97,14 +97,83 @@
                     </tr>
                 @endforeach
             </tbody>
+        </table>
+
+        <fieldset>
+          <legend><h5>Dato Familiares</h5></legend>
+          <div class="FormRegistro">
+            {{ Form::open(['action' => 'FamiliarController@registrar_familiar', 'method' => 'PUT']) }}
+            <input type="hidden" name="identificacion" value="{!! $key->NUMERODOC !!}">
+              <div class="row">
+                <div class="input-field col l1">
+                  <input id="docpadre" name="docpadre" type="number" required>
+                  <label for="docpadre">#Documento</label>
+                </div>
+                <div class="input-field col l1">
+                  <input id="nombre" name="nombre" type="text" required>
+                  <label for="nombre">Nombre</label>
+                </div>
+                <div class="input-field col l2">
+                  <input id="apellido1" name="apellido1" type="text" required>
+                  <label for="apellido1">Primer Apellido</label>
+                </div>
+                <div class="input-field col l2">
+                  <input id="apellido2" name="apellido2" type="text" required>
+                  <label for="apellido2">Segundo Apellido</label>
+                </div>
+                <div class="input-field col l1">
+                  <input id="telefono" name="telefono" type="number" required>
+                  <label for="telefono">Telefono</label>
+                </div>
+                <div class="input-field col l2">
+                  <input id="direccion" name="direccion" type="text" required>
+                  <label for="direccion">Direccion</label>
+                </div>
+                <div class="input-field col l1">
+                  <input id="parentesco" name="parentesco" type="text" required>
+                  <label for="parentesco">Parentesco</label>
+                </div>
+                <div class="input-field col l1">
+                  <button class="btn center waves-effect waves-light blue darken-4" type="submit" name="action">Registrar</button>
+                </div>
+              </div>
+            {{ Form::close()}}
+          </div>
+          @if ($datofamilia == null)
+              <h4>No hay datos para mostrar</h4>
+          @else
+            <table id="tabla_datos" class="striped" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th># DOCUMENTO</th>
+                        <th>NOMBRE COMPLETO</th>
+                        <th>DIRECCION</th>
+                        <th>TELEFONO</th>
+                        <th>PARENTESCO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($datofamilia as $key2)
+                        <tr>
+                            <td>{!! $key2->DOCPADRE !!}</td>
+                            <td>{!! $key2->NOMBRE !!}  {!! $key2->PRIMERAPELLIDO !!} {!! $key2->SEGUNDOAPELLIDO !!}</td>
+                            <td>{!! $key2->DIRECCION !!}</td>
+                            <td>{!! $key2->TELEFONO1 !!}</td>
+                            <td>{!! $key2->PARENTESCO !!}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
             </table>
+          @endif
+        </fieldset>
+
             <div id="modalestudiante" class="modal">
                 <div class="modal-content">
                 <h4>Editar información de Estudiante "{!! $key->PRIMERNOMBRE !!} {!! $key->PRIMERAPELLIDO !!}"</h4>
                 {{ Form::open(['action' => 'EstudianteController@edit_estudiante_update']) }}
                     <br>
                     @if ($errors->any())
-                        <div class="help-block red-text">         
+                        <div class="help-block red-text">
                         @foreach ($errors->all() as $error)
                             <strong>{{ $error }}<br></strong>
                         @endforeach
@@ -134,7 +203,7 @@
                         <div class="col s3 m3 l3">
                             <h6 class="blue-text text-darken-4">SEGUNDO APELLIDO</h6>
                             <input type="text" name="new_apellido2" id="new_apellido2" value="{{ $key->SEGUNDOAPELLIDO }}">
-                        </div>    
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col s3 m3 l3">
@@ -152,10 +221,10 @@
                         <div class="col s3 m3 l3">
                             <h6 class="blue-text text-darken-4">PARENTESCO</h6>
                             <input type="text" name="new_parentesco" id="new_parentesco" value="{{ $key->PARENTESCO }}">
-                        </div>    
+                        </div>
                     </div>
-                    
-                    
+
+
                     <div class="row">
                        <center> <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">¡Actualizar información de Estudiante!</button></center>
                     </div>

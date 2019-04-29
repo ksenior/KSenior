@@ -8,13 +8,20 @@ textarea{
   border-style: solid gray !important;
     border-width: 1px !important;
     background-color: white !important;
-    max-height: 80px !important;  
+    max-height: 80px !important;
     height: 80px !important;
 }
 
 .picker__day--today{
   font-weight: bold !important;
   text-shadow: 20 20 100px #fff !important;
+}
+
+.FormRegistro{
+  border-radius: 2px !important;
+  border: 1px gray solid  !important;
+  margin-bottom: 1em;
+  background-color: #e3f2fd; 
 }
 
 .centrado{
@@ -55,7 +62,7 @@ h6.text-darken-4, label.text-darken-4{
   text-transform: uppercase !important;
 }
 .z-depth-1 input{
- text-align: center !important; 
+ text-align: center !important;
 }
 .card {
   border: 1px solid transparent;
@@ -273,15 +280,15 @@ th{
 }
 
 .mb-6{
-  margin-bottom: 6% !important;  
+  margin-bottom: 6% !important;
 }
 
 .mt-6{
-  margin-top: 6% !important;  
+  margin-top: 6% !important;
 }
 
 .mb-1{
-  margin-bottom: 1% !important;  
+  margin-bottom: 1% !important;
 }
 
 .no-display{

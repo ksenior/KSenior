@@ -27,6 +27,7 @@ Route::group(['prefix' => 'boletines'], function() {
 Route::group(['prefix' => 'estudiante'], function() {
 	Route::get('verestudiante','EstudianteController@ver_estudiante_index')->name('estudiante.verestudiante');
 	Route::post('verestudiante','EstudianteController@ver_estudiante_consulta');
+	Route::put('verestudiante','FamiliarController@registrar_familiar');
 	Route::get('verestudiantexcurso','EstudianteController@ver_estudiantexcurso_index')->name('estudiante.verestudiantexcurso');
 	Route::post('verestudiantexcurso','EstudianteController@ver_estudiantexcurso_consulta');
 	Route::get('editestudiante','EstudianteController@edit_estudiante_index')->name('estudiante.editestudiante');
@@ -103,7 +104,7 @@ Route::group(['prefix' => 'bienestar'], function() {
 	Route::get('registrar_conflicto','BienestarController@buscar_conflicto_index')->name('bienestar.registrar_conflicto');
 	Route::put('registrar_conflicto','BienestarController@buscar_ausencia_consulta');
 	Route::post('registrar_conflicto','BienestarController@registrar_conflicto_consulta');
-	
+
 	Route::get('registrar_compromiso','BienestarController@buscar_compromiso_index')->name('bienestar.registrar_compromiso');
 	Route::put('registrar_compromiso','BienestarController@buscar_ausencia_consulta');
 	Route::post('registrar_compromiso','BienestarController@registrar_compromiso_consulta');
@@ -114,11 +115,11 @@ Route::group(['prefix' => 'bienestar'], function() {
 
 	Route::get('registrar_sesion','BienestarController@buscar_sesion_index')->name('bienestar.registrar_sesion');
 	Route::put('registrar_sesion','BienestarController@buscar_ausencia_consulta');
-	Route::post('registrar_sesion','BienestarController@registrar_sesion_consulta');	
+	Route::post('registrar_sesion','BienestarController@registrar_sesion_consulta');
 
 	Route::get('registrar_entrevista','BienestarController@buscar_entrevista_index')->name('bienestar.registrar_entrevista');
 	Route::put('registrar_entrevista','BienestarController@buscar_ausencia_consulta');
-	Route::post('registrar_entrevista','BienestarController@registrar_entrevista_consulta');	
+	Route::post('registrar_entrevista','BienestarController@registrar_entrevista_consulta');
 	});
 
 
@@ -126,9 +127,3 @@ Route::get('generate-pdf','BoletinController@generate_pdf')->name('generate-pdf'
 
 
 //Auth::routes();
-
-
-
-
-
-

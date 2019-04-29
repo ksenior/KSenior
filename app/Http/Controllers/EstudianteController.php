@@ -13,15 +13,15 @@ use App\Alumno;
 class EstudianteController extends Controller
 {
     public function ver_estudiante_index(){
-    	if (Auth::check()){
-			return view('estudiante.verestudiante',
-			[
-				'consulta'		=> null	
-			]);
-		} else {
-		 //Log::info($_SERVER['HTTP_X_FORWARDED_FOR'].'|NI|Inicio|Ingreso a Sistema de Información de Recaudos SIT');
-		 return redirect()->route('home');
-		}
+      if (Auth::check()){
+  			return view('estudiante.verestudiante',
+  			[
+  				'consulta'		=> null
+  			]);
+  		} else {
+  		 //Log::info($_SERVER['HTTP_X_FORWARDED_FOR'].'|NI|Inicio|Ingreso a Sistema de Información de Recaudos SIT');
+  		 return redirect()->route('home');
+  		}
     }
 
     public function ver_estudiante_consulta(request $request)
@@ -37,12 +37,12 @@ class EstudianteController extends Controller
 			{
 				//Log::alert($_SERVER['HTTP_X_FORWARDED_FOR'].'|'.Auth::user()->name.'|SIRBQ/Gerencia Operativa/Recarga x dia x Medio de Pago|Acceso a reporte '.$validacion->errors());
 				return redirect()->back()->withInput()->withErrors($validacion->errors());
-			}	
+			}
 			//dd($request);
 			switch ($request->tipobusqueda) {
 				case 1:
 					$sql = "SELECT NUMERODOC,PRIMERNOMBRE,SEGUNDONOMBRE,PRIMERAPELLIDO,SEGUNDOAPELLIDO,FECHANAC,DIRECCION,BARRIO,DEPARTAMENTO,MUNICIPIO, ACUDIENTE,PARENTESCO
-						FROM alumnos al 
+						FROM alumnos al
 						WHERE CONCAT(primernombre,' ',segundonombre) like '%$request->busqueda%'
 						order by 1 asc";
 					break;
@@ -52,22 +52,23 @@ class EstudianteController extends Controller
 						WHERE numerodoc = $request->busqueda
 						order by 1 asc";
 					break;
-				
+
 				default:
 					# code...
 					break;
 			}
-			
-
+      $sql2 = "select * from familia where numerodoc = $request->busqueda";
 			$datos_consulta = DB::connection('mysql')->select( DB::raw($sql));
+      $dato_familiares = DB::connection('mysql')->select( DB::raw($sql2));
 
 			//dd($datos_consulta);
 			//dd($consolidado);
-			
+
 			return view('estudiante.verestudiante',
 			[
 			    'tipobusqueda'  => $request->tipobusqueda,
 			    'busqueda'     => $request->busqueda,
+          'datofamilia' => $dato_familiares,
 			    'consulta'      => $datos_consulta
 			]);
 		} else {
@@ -86,9 +87,9 @@ class EstudianteController extends Controller
 			{
 				//Log::alert($_SERVER['HTTP_X_FORWARDED_FOR'].'|'.Auth::user()->name.'|SIRBQ/Gerencia Operativa/Recarga x dia x Medio de Pago|Acceso a reporte '.$validacion->errors());
 				return redirect()->back()->withInput()->withErrors($validacion->errors());
-			}	
+			}
 			$sql="SELECT CONCAT(primernombre,' ',segundonombre,' ',primerapellido,' ',segundoapellido) nombrecompleto
-						,ma.ano,ma.curso,al.numerodoc,ma.codmatricula,ma.jornada				
+						,ma.ano,ma.curso,al.numerodoc,ma.codmatricula,ma.jornada
 						FROM alumnos al LEFT JOIN matricula ma ON al.numerodoc = ma.codide
 						WHERE al.numerodoc = $request->busqueda
 						order by ma.ano desc";
@@ -128,7 +129,7 @@ class EstudianteController extends Controller
 			{
 				//Log::alert($_SERVER['HTTP_X_FORWARDED_FOR'].'|'.Auth::user()->name.'|SIRBQ/Gerencia Operativa/Recarga x dia x Medio de Pago|Acceso a reporte '.$validacion->errors());
 				return redirect()->back()->withInput()->withErrors($validacion->errors());
-			}	
+			}
 			//dd($request);
 			$n = DB::connection('mysql')->update(DB::RAW("
                 update alumnos set primernombre= '$request->new_nombre1', segundonombre= '$request->new_nombre2', primerapellido= '$request->new_apellido1', segundoapellido = '$request->new_apellido2', direccion = '$request->new_direccion', barrio = '$request->new_barrio', acudiente = '$request->new_acudiente', parentesco = '$request->new_parentesco' where numerodoc = '$request->id_estudiante'"
@@ -149,7 +150,7 @@ class EstudianteController extends Controller
 
 			//dd($datos_consulta);
 			//dd($consulta);
-			
+
 			return view('estudiante.verestudiante',
 			[
 				'flash'		=> $flash
@@ -163,7 +164,7 @@ class EstudianteController extends Controller
     	if (Auth::check()){
 			return view('estudiante.verestudiantexcurso',
 			[
-				'consulta'		=> null	
+				'consulta'		=> null
 			]);
 		} else {
 		 //Log::info($_SERVER['HTTP_X_FORWARDED_FOR'].'|NI|Inicio|Ingreso a Sistema de Información de Recaudos SIT');
@@ -184,7 +185,7 @@ class EstudianteController extends Controller
 			{
 				//Log::alert($_SERVER['HTTP_X_FORWARDED_FOR'].'|'.Auth::user()->name.'|SIRBQ/Gerencia Operativa/Recarga x dia x Medio de Pago|Acceso a reporte '.$validacion->errors());
 				return redirect()->back()->withInput()->withErrors($validacion->errors());
-			}	
+			}
 			//dd($request);
 			$sql = "SELECT m.*,CONCAT(al.primernombre,' ',al.segundonombre,' ',al.primerapellido,' ',al.segundoapellido) as NOMBRECOMPLETO
 FROM matricula m LEFT JOIN alumnos al ON m.codide = al.numerodoc where m.ano = $request->ano and m.curso = '$request->curso'";
@@ -193,7 +194,7 @@ FROM matricula m LEFT JOIN alumnos al ON m.codide = al.numerodoc where m.ano = $
 
 			//dd($datos_consulta);
 			//dd($consolidado);
-			
+
 			return view('estudiante.verestudiantexcurso',
 			[
 			    'ano'  => $request->ano,
@@ -209,7 +210,7 @@ FROM matricula m LEFT JOIN alumnos al ON m.codide = al.numerodoc where m.ano = $
     	if (Auth::check()){
 			return view('estudiante.registrar_estudiante',
 			[
-				'consulta'		=> null	
+				'consulta'		=> null
 			]);
 		} else {
 		 //Log::info($_SERVER['HTTP_X_FORWARDED_FOR'].'|NI|Inicio|Ingreso a Sistema de Información de Recaudos SIT');
@@ -249,9 +250,9 @@ FROM matricula m LEFT JOIN alumnos al ON m.codide = al.numerodoc where m.ano = $
 				$alumno = new Alumno();
 				$alumno->docide = $request->tipodocumento;
 				$alumno->numerodoc = $request->identificacion;
-				$alumno->primernombre = $request->primernombre;	
+				$alumno->primernombre = $request->primernombre;
 				if(isset($request->segundonombre)){
-					$alumno->segundonombre = $request->segundonombre;	
+					$alumno->segundonombre = $request->segundonombre;
 				}
 				$alumno->primerapellido = $request->primerapellido;
 				$alumno->segundoapellido = $request->segundoapellido;
@@ -279,15 +280,15 @@ FROM matricula m LEFT JOIN alumnos al ON m.codide = al.numerodoc where m.ano = $
 			}catch(\Exception $ex){
 				//dd($ex);
 				if($ex->errorInfo[0]==23000){
-					$errorMessage="Ya se encuentra un estudiante registrado con ese documento";	
+					$errorMessage="Ya se encuentra un estudiante registrado con ese documento";
 				}
 				else{
-					$errorMessage=$ex->message;		
+					$errorMessage=$ex->message;
 				}
 				return redirect()->back()->withInput()->withErrors($errorMessage);
 			}
 
-			
+
 
 		} else {
 			return redirect()->route('home');
@@ -298,7 +299,7 @@ FROM matricula m LEFT JOIN alumnos al ON m.codide = al.numerodoc where m.ano = $
     	if (Auth::check()){
 			return view('estudiante.upload_estudiante',
 			[
-				'consulta'		=> null	
+				'consulta'		=> null
 			]);
 		} else {
 		 //Log::info($_SERVER['HTTP_X_FORWARDED_FOR'].'|NI|Inicio|Ingreso a Sistema de Información de Recaudos SIT');
@@ -317,10 +318,10 @@ FROM matricula m LEFT JOIN alumnos al ON m.codide = al.numerodoc where m.ano = $
 			{
 				//Log::alert($_SERVER['HTTP_X_FORWARDED_FOR'].'|'.Auth::user()->name.'|SIRBQ/Gerencia Operativa/Recarga x dia x Medio de Pago|Acceso a reporte '.$validacion->errors());
 				return redirect()->back()->withInput()->withErrors($validacion->errors());
-			}	
+			}
 			//dd($request);
 			try{
-				Excel::import(new AlumnoImport, request()->file('archivo'));	
+				Excel::import(new AlumnoImport, request()->file('archivo'));
 				$flash = array(
                     'color'=> 'green',
                     'text' => 'Información Ingresada Correctamente a BD'
@@ -330,12 +331,12 @@ FROM matricula m LEFT JOIN alumnos al ON m.codide = al.numerodoc where m.ano = $
 				return redirect()->back()->withInput()->withErrors($errorMessage);
 			}
 
-			
-			
+
+
 			/*$array = Excel::toArray(new NotasPrimariaImport, request()->file('archivo'));
 
 			dd($array);*/
-			
+
 			return view('estudiante.upload_estudiante',
 			[
 			    'flash'     => $flash,
